@@ -25,16 +25,38 @@
       file:
         path: "{{ hosting_dir }}"
         state: directory
+    - name: Grab the patched OSG fork
+      git:
+        repo: "https://github.com/OpenMW/osg.git"
+        dest: "{{ hosting_dir }}/osg"
+        version: HEAD
+    - name: Create the build directory (OSG)
+      file:
+        path: "{{ hosting_dir }}/osg/build"
+        state: directory
+    - name: Generate regular make file (OSG)
+      command: "cmake ../"
+      args:
+        chdir: "{{ hosting_dir }}/osg/build"
+    - name: Build OSG
+      command: "make"
+      args:
+        chdir: "{{ hosting_dir }}/osg/build"
+    - name: Install OSG
+      command: "make install"
+      args:
+        chdir: "{{ hosting_dir }}/osg/build"
+      become: yes
     - name: Grab the OpenMW directory
       git:
         repo: "https://github.com/openmw/openmw.git"
         dest: "{{ hosting_dir }}/openmw"
         version: HEAD
-    - name: Create the build directory
+    - name: Create the build directory (OpenMW)
       file:
         path: "{{ hosting_dir }}/openmw/build"
         state: directory
-    - name: Generate regular make file
+    - name: Generate regular make file (OpenMW)
       command: "cmake ../"
       args:
         chdir: "{{ hosting_dir }}/openmw/build"
