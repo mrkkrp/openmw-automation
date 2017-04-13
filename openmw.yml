@@ -1,0 +1,213 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+
+  vars:
+    hosting_dir: "/home/mark/Downloads" # this should not use tilde
+
+  tasks:
+    - name: Install dependencies
+      pacman:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - openscenegraph # OpenGL rendering toolkit
+        - sdl2           # input and windowing
+        - mygui          # GUI toolkit
+        - bullet         # the physics engine
+        - openal         # for sound playback
+        - ffmpeg         # for sound decoding and BINK video playback
+        - cmake          # used to manage the build process
+        - git            # well, listing just in case…
+      become: yes
+    - name: Ensure the hosting directory is present
+      file:
+        path: "{{ hosting_dir }}"
+        state: directory
+    - name: Grab the OpenMW directory
+      git:
+        repo: "https://github.com/openmw/openmw.git"
+        dest: "{{ hosting_dir }}/openmw"
+        version: HEAD
+    - name: Create the build directory
+      file:
+        path: "{{ hosting_dir }}/openmw/build"
+        state: directory
+    - name: Generate regular make file
+      command: "cmake ../"
+      args:
+        chdir: "{{ hosting_dir }}/openmw/build"
+    - name: Build OpenMW
+      command: "make"
+      args:
+        chdir: "{{ hosting_dir }}/openmw/build"
+    - name: Install OpenMW
+      command: "make install"
+      args:
+        chdir: "{{ hosting_dir }}/openmw/build"
+      become: yes
+    - name: Grab the Pelagiad font
+      git:
+        repo: "https://github.com/Isaskar/Pelagiad.git"
+        dest: "{{ hosting_dir }}/Pelagiad"
+        version: HEAD
+    - name: Install the Pelagiad font
+      copy:
+        src: "{{ hosting_dir }}/Pelagiad/{{ item }}"
+        dest: "/usr/local/share/games/openmw/resources/mygui/{{ item }}"
+      with_items:
+        - "Pelagiad.ttf"
+        - "openmw_font.xml"
+      become: yes
+    - name: Setup video settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Video"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: resolution x
+          value: 1920
+        - option: resolution y
+          value: 1080
+        - option: antialiasing
+          value: 8
+        - option: fullscreen
+          value: true
+        - option: framerate limit
+          value: 60
+    - name: Setup camera settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Camera"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: field of view
+          value: 70
+        - option: small feature culling pixel size
+          value: 2
+        - option: viewing distance
+          value: 60000
+    - name: Setup GUI settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "GUI"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: menu transparency
+          value: 0.884888
+        - option: subtitles
+          value: true
+    - name: Setup game settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Game"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: difficulty
+          value: 0.950096
+        - option: show owned
+          value: 1
+        - option: show effect duration
+          value: true
+        - option: best attack
+          value: true
+    - name: Setup general settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "General"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: anisotropy
+          value: 16
+        - option: texture mipmap
+          value: linear
+    - name: Setup water settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Water"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: reflect actors
+          value: true
+        - option: refraction
+          value: true
+        - option: rtt size
+          value: 2048
+        - option: shader
+          value: true
+    - name: Setup input settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Input"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: always run
+          value: true
+    - name: Setup Windows settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Windows"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: inventory h
+          value: 0.568519
+        - option: inventory w
+          value: 0.415625
+        - option: inventory x
+          value: 0
+        - option: inventory y
+          value: 0.431481
+        - option: map h
+          value: 0.218519
+        - option: map w
+          value: 0.139062
+        - option: map x
+          value: 0.860417
+        - option: map y
+          value: 0
+        - option: dialogue h
+          value: 0.808333
+        - option: dialogue w
+          value: 0.809896
+        - option: dialogue x
+          value: 0.0947917
+        - option: dialogue y
+          value: 0.0944444
+    - name: Setup cells settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Cells"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: exterior cell load distance
+          value: 3
+        - option: preload num threads
+          value: 3
+    - name: Setup terrain settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "Terrain"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: distant terrain
+          value: true
+    - name: Setup HUD settings
+      ini_file:
+        dest: "~/.config/openmw/settings.cfg"
+        section: "HUD"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+      with_items:
+        - option: crosshair
+          value: true
