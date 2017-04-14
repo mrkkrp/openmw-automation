@@ -29,7 +29,7 @@
       git:
         repo: "https://github.com/OpenMW/osg.git"
         dest: "{{ hosting_dir }}/osg"
-        version: HEAD
+        version: master
     - name: Create the build directory (OSG)
       file:
         path: "{{ hosting_dir }}/osg/build"
@@ -51,7 +51,7 @@
       git:
         repo: "https://github.com/openmw/openmw.git"
         dest: "{{ hosting_dir }}/openmw"
-        version: HEAD
+        version: master
     - name: Create the build directory (OpenMW)
       file:
         path: "{{ hosting_dir }}/openmw/build"
@@ -73,7 +73,7 @@
       git:
         repo: "https://github.com/Isaskar/Pelagiad.git"
         dest: "{{ hosting_dir }}/Pelagiad"
-        version: HEAD
+        version: master
     - name: Install the Pelagiad font
       copy:
         src: "{{ hosting_dir }}/Pelagiad/{{ item }}"
