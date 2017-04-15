@@ -116,6 +116,10 @@
           value: true
         - option: best attack
           value: true
+        - option: show projectile damage
+          value: true
+        - option: show melee info
+          value: true
     - name: Setup general settings
       ini_file:
         dest: "~/.config/openmw/settings.cfg"
