@@ -11,13 +11,10 @@ order:
 
 1. Installs dependencies for [OpenMW](https://openmw.org/) using `pacman`
    (I'm on Arch Linux).
-2. Grabs, builds, and
-   installs [a custom fork of OpenSceneGraph](https://github.com/OpenMW/osg)
-   tailored for better performance with OpenMW.
-3. Grabs, builds, and installs the latest OpenMW trunk.
-4. Setups the [Pelagiad](https://github.com/Isaskar/Pelagiad) font, which is
+2. Grabs, builds, and installs the latest OpenMW trunk.
+3. Setups the [Pelagiad](https://github.com/Isaskar/Pelagiad) font, which is
    better for the eyes than Morrowind's “Magic Cards” (the default font).
-5. Tweaks the `~/.config/openmw/settings.cfg` the way I like it.
+4. Tweaks the `~/.config/openmw/settings.cfg` the way I like it.
 
 I'm automating this because I like to keep an eye on the engine's latest
 developments and experiment with the settings, but I don't like to mess with
