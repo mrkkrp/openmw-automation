@@ -25,7 +25,7 @@
       file:
         path: "{{ hosting_dir }}"
         state: directory
-    - name: Grab the OpenMW directory
+    - name: Grab the OpenMW repository
       git:
         repo: "https://github.com/openmw/openmw.git"
         dest: "{{ hosting_dir }}/openmw"
