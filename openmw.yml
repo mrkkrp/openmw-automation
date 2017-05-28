@@ -112,7 +112,7 @@
         value: "{{ item.value }}"
       with_items:
         - option: difficulty
-          value: 0.950096
+          value: 1
         - option: show owned
           value: 1
         - option: show effect duration
