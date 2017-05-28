@@ -12,14 +12,17 @@
         name: "{{ item }}"
         state: latest
       with_items:
+        - boost          # C++ boost library
+        - bullet         # the physics engine
+        - cmake          # used to manage the build process
+        - doxygen        # a documentation system for C++
+        - ffmpeg         # for sound decoding and BINK video playback
+        - git            # well, listing just in case…
+        - mygui          # GUI toolkit
+        - openal         # for sound playback
         - openscenegraph # OpenGL rendering toolkit
         - sdl2           # input and windowing
-        - mygui          # GUI toolkit
-        - bullet         # the physics engine
-        - openal         # for sound playback
-        - ffmpeg         # for sound decoding and BINK video playback
-        - cmake          # used to manage the build process
-        - git            # well, listing just in case…
+        - unshield       # extracts CAB files from InstallShield installers
       become: yes
     - name: Ensure the hosting directory is present
       file:
