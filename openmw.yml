@@ -104,8 +104,6 @@
           value: 0.884888
         - option: subtitles
           value: true
-        - option: show enchant chance
-          value: true
     - name: Setup game settings
       ini_file:
         dest: "~/.config/openmw/settings.cfg"
@@ -124,6 +122,8 @@
         - option: show projectile damage
           value: true
         - option: show melee info
+          value: true
+        - option: show enchant chance
           value: true
     - name: Setup general settings
       ini_file:
